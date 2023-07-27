@@ -1,11 +1,22 @@
-ARG  DISTROLESS_IMAGE=gcr.io/distroless/base
+# syntax=docker/dockerfile:1
+FROM golang:1.19-alpine AS build-env
+RUN mkdir -p /go/src/confluence-gardner
 
-# using base nonroot image
-# user:group is nobody:nobody, uid:gid = 65534:65534
-FROM ${DISTROLESS_IMAGE}
+# Copy the module files first and then download the dependencies. If this
+# doesn't change, we won't need to do this again in future builds.
+WORKDIR /go/src/confluence-gardner
 
-# Copy our static executable
-COPY confluence-gardner /confluence-gardner
+COPY go.* ./
+RUN go mod download
 
-# Run the hello binary.
-ENTRYPOINT ["/confluence-gardner"]
+WORKDIR /go/src/confluence-gardner
+ADD conf conf
+COPY *.go ./
+RUN go build -o confluence-gardner
+
+# final stage
+FROM alpine:latest
+COPY --from=build-env /go/src/confluence-gardner/confluence-gardner  /usr/local/bin/confluence-gardner
+RUN mkdir -p /output
+ENV DIRECTORY /output
+ENTRYPOINT ["confluence-gardner"]
