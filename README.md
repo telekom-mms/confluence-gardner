@@ -18,6 +18,12 @@ Follow these instructions to get the Confluence-Gardner up and running on your l
 
 Just download the binary from the releases-page and execute it.
 
+### Use the provided Container
+
+You can use the provider container:
+
+     docker run ghcr.io/telekom-mms/confluence-gardner
+
 ### Manually
 
 Clone the Confluence-Gardner repository:
