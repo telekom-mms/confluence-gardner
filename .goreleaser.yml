@@ -1,0 +1,12 @@
+project_name: confluence-gardner
+
+builds:
+  - env: [CGO_ENABLED=0]
+dockers:
+-
+  goos: linux
+  goarch: amd64
+  dockerfile: goreleaser.dockerfile
+  image_templates:
+  - 'ghcr.io/telekom-mms/confluence-gardner:{{ .Tag }}'
+  - 'ghcr.io/telekom-mms/confluence-gardner:latest'
