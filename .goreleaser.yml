@@ -3,7 +3,7 @@ project_name: confluence-gardner
 builds:
   - env: [CGO_ENABLED=0]
     ldflags:
-      - -s -w -X confluence-gardner/conf.version={{.Version}}
+      - -s -w -X confluence-gardner/conf.version={{.Tag }}
 dockers:
   -
     goos: linux
