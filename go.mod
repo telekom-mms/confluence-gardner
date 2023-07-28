@@ -1,6 +1,6 @@
 module confluence-gardner
 
-go 1.18
+go 1.20
 
 require github.com/virtomize/confluence-go-api v1.4.5
 
