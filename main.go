@@ -79,8 +79,8 @@ func main() {
 		// get random article
 		rand.Seed(time.Now().UnixNano())
 		randIdx := rand.Intn(len(oldArticles))
-		fmt.Printf("Confluence page [%s](%s/pages/viewpage.action?pageId=%s) was last updated at %s. Please check its contents.", oldArticles[randIdx].Title, domain, oldArticles[randIdx].ID, oldArticles[randIdx].lastUpdateTime.Format("2006-01-02"))
+		fmt.Printf("Confluence page [%s](%s/pages/viewpage.action?pageId=%s) was last updated at %s. Please check its contents.\n", oldArticles[randIdx].Title, domain, oldArticles[randIdx].ID, oldArticles[randIdx].lastUpdateTime.Format("2006-01-02"))
 	} else {
-		fmt.Printf("There are no old Confluence Pages. Congratulations!")
+		fmt.Println("There are no old Confluence Pages. Congratulations!")
 	}
 }
