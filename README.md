@@ -9,8 +9,8 @@ Follow these instructions to get the Confluence-Gardner up and running on your l
 
 ## Prerequisites
 
-    Golang 1.16 or later
-    Confluence API access
+* Golang 1.19 or later
+* Confluence API access
 
 ## Installation
 
@@ -50,12 +50,11 @@ Build the tool:
 
 Contributions to Confluence-Gardner are welcome! Please follow these steps:
 
-    Fork the repository on GitHub.
-    Make your changes in a new branch.
-    Create a pull request with a clear description of your changes.
-    We will review and merge your contribution if applicable.
+* Fork the repository on GitHub.
+* Make your changes in a new branch.
+* Create a pull request with a clear description of your changes.
+* We will review and merge your contribution if applicable.
 
 ## License
 
 This project is licensed under the GPLv3 - see the LICENSE file for details.
-
