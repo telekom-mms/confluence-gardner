@@ -1,46 +1,45 @@
 package main
 
 import (
-	"confluence-gardner/conf"
 	"fmt"
 	"log"
 	"math/rand"
 	"net/url"
 	"time"
 
+	"confluence-gardner/conf"
+
 	"github.com/spf13/viper"
 	goconfluence "github.com/virtomize/confluence-go-api"
 )
 
-func getDomainName(confluence_url string) string {
-	url, err := url.Parse(confluence_url)
+func getDomainName(confluenceURL string) string {
+	url, err := url.Parse(confluenceURL)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	return url.Scheme + "://" + url.Host
-
 }
 
 func main() {
-
 	conf.ReadConf()
 	conf.ParseCliOpts()
 
 	// initialize a new api instance
 
-	c_url := viper.GetString("confluence_url")
-	c_token := viper.GetString("confluence_token")
-	c_page_id := viper.GetString("confluence_page_id")
+	cURL := viper.GetString("confluence_url")
+	cToken := viper.GetString("confluence_token")
+	cPageID := viper.GetString("confluence_page_id")
 
-	domain := getDomainName(c_url)
+	domain := getDomainName(cURL)
 
-	api, err := goconfluence.NewAPI(c_url, "", c_token)
+	api, err := goconfluence.NewAPI(cURL, "", cToken)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	childPages, err := api.GetChildPages(c_page_id)
+	childPages, err := api.GetChildPages(cPageID)
 	if err != nil {
 		log.Fatal(err)
 	}
