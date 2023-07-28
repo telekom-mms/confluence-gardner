@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM golang:1.19-alpine AS build-env
+FROM golang:1.20-alpine AS build-env
 RUN mkdir -p /go/src/confluence-gardner
 
 # Copy the module files first and then download the dependencies. If this
