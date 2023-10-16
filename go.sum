@@ -179,6 +179,8 @@ github.com/subosito/gotenv v1.6.0 h1:9NlTDc1FTs4qu0DDq7AEtTPNw6SVm7uBMsUCUjABIf8
 github.com/subosito/gotenv v1.6.0/go.mod h1:Dk4QP5c2W3ibzajGcXpNraDfq2IrhjMIvMSWPKKo0FU=
 github.com/virtomize/confluence-go-api v1.4.5 h1:n3RsZkCwpMq6+opPEgXDrKCn+XZsaY4B5V4LmlA7LHw=
 github.com/virtomize/confluence-go-api v1.4.5/go.mod h1:a96WPcok5g+7l5LC/ztcrp4cLmrIA1DHxxZSv/iqvsQ=
+github.com/virtomize/confluence-go-api v1.4.6 h1:yN1khm2tU0aFc7N7x58QQ+668rko77qIMIhs2f+qEO8=
+github.com/virtomize/confluence-go-api v1.4.6/go.mod h1:a96WPcok5g+7l5LC/ztcrp4cLmrIA1DHxxZSv/iqvsQ=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
