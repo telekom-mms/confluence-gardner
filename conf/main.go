@@ -21,7 +21,9 @@ func ReadConf() {
 
 func ParseCliOpts() {
 	var versionFlag bool
+	var debugFlag bool
 	pflag.BoolVar(&versionFlag, "version", false, "Print the version of the program")
+	pflag.BoolVar(&debugFlag, "debug", false, "enable debug outpuz")
 
 	pflag.StringP("confluence_url", "u", "https://confluence.example.com/rest/api", "The URL to the Confluence REST-API with http(s)")
 	pflag.StringP("confluence_token", "t", "", "The token to authenticate against the Confluence REST-API")

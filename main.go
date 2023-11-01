@@ -34,14 +34,16 @@ func main() {
 
 	domain := getDomainName(cURL)
 
+	goconfluence.SetDebug(viper.GetViper().GetBool("debug"))
+
 	api, err := goconfluence.NewAPI(cURL, "", cToken)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error connecting to Confluence: ", err)
 	}
 
 	childPages, err := api.GetChildPages(cPageID)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error getting child pages: ", err)
 	}
 
 	now := time.Now()
@@ -57,7 +59,7 @@ func main() {
 	for _, v := range childPages.Results {
 		hist, err := api.GetHistory(v.ID)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("Error getting history: ", err)
 		}
 		lastUpdateTimeString := hist.LastUpdated.When
 		lastUpdateTime, err := time.Parse("2006-01-02T15:04:05.000Z", lastUpdateTimeString)
