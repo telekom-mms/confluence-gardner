@@ -31,5 +31,5 @@ require (
 
 require (
 	github.com/magefile/mage v1.14.0 // indirect
-	github.com/spf13/viper v1.18.1
+	github.com/spf13/viper v1.18.2
 )
