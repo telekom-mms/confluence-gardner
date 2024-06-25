@@ -47,7 +47,7 @@ func getOldArticlesRecursive(api *goconfluence.API, pageID string, now time.Time
 	for _, page := range childPages.Results {
 		history, err := api.GetHistory(page.ID)
 		if err != nil {
-			return fmt.Errorf("error getting history: %w", err)
+			return fmt.Errorf("failed to fetch history for page %s: %w", page.ID, err)
 		}
 
 		lastUpdateTime, err := time.Parse("2006-01-02T15:04:05.000Z", history.LastUpdated.When)
@@ -59,7 +59,7 @@ func getOldArticlesRecursive(api *goconfluence.API, pageID string, now time.Time
 			*oldArticles = append(*oldArticles, Article{ID: page.ID, Title: page.Title, LastUpdateTime: lastUpdateTime})
 		}
 
-		// Rekursiv untergeordnete Seiten durchsuchen
+		// use Recursion to dive into each Layer of Confluence pages
 		err = getOldArticlesRecursive(api, page.ID, now, maxDepth, currentDepth+1, ageThresholdHours, oldArticles)
 		if err != nil {
 			return err
