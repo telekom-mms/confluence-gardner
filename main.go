@@ -13,24 +13,71 @@ import (
 	goconfluence "github.com/virtomize/confluence-go-api"
 )
 
+type Article struct {
+	ID             string
+	Title          string
+	LastUpdateTime time.Time
+}
+
 func getDomainName(confluenceURL string) string {
-	url, err := url.Parse(confluenceURL)
+	parsedURL, err := url.Parse(confluenceURL)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return url.Scheme + "://" + url.Host
+	return parsedURL.Scheme + "://" + parsedURL.Host
+}
+
+func getOldArticles(api *goconfluence.API, pageID string, now time.Time, maxDepth int, ageThresholdHours float64) ([]Article, error) {
+	var oldArticles []Article
+	err := getOldArticlesRecursive(api, pageID, now, maxDepth, 0, ageThresholdHours, &oldArticles)
+	return oldArticles, err
+}
+
+func getOldArticlesRecursive(api *goconfluence.API, pageID string, now time.Time, maxDepth, currentDepth int, ageThresholdHours float64, oldArticles *[]Article) error {
+	if currentDepth > maxDepth {
+		return nil
+	}
+
+	childPages, err := api.GetChildPages(pageID)
+	if err != nil {
+		return fmt.Errorf("error getting child pages: %w", err)
+	}
+
+	for _, page := range childPages.Results {
+		history, err := api.GetHistory(page.ID)
+		if err != nil {
+			return fmt.Errorf("error getting history: %w", err)
+		}
+
+		lastUpdateTime, err := time.Parse("2006-01-02T15:04:05.000Z", history.LastUpdated.When)
+		if err != nil {
+			return fmt.Errorf("error parsing last update time: %w", err)
+		}
+
+		if now.Sub(lastUpdateTime).Hours() > ageThresholdHours {
+			*oldArticles = append(*oldArticles, Article{ID: page.ID, Title: page.Title, LastUpdateTime: lastUpdateTime})
+		}
+
+		// Rekursiv untergeordnete Seiten durchsuchen
+		err = getOldArticlesRecursive(api, page.ID, now, maxDepth, currentDepth+1, ageThresholdHours, oldArticles)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func main() {
 	conf.ReadConf()
 	conf.ParseCliOpts()
 
-	// initialize a new api instance
-
 	cURL := viper.GetString("confluence_url")
 	cToken := viper.GetString("confluence_token")
 	cPageID := viper.GetString("confluence_page_id")
+	maxDepth := viper.GetInt("max_depth")
+	ageThresholdHours := viper.GetFloat64("age_threshold_hours")
 
 	domain := getDomainName(cURL)
 
@@ -41,46 +88,17 @@ func main() {
 		log.Fatal("Error connecting to Confluence: ", err)
 	}
 
-	childPages, err := api.GetChildPages(cPageID)
-	if err != nil {
-		log.Fatal("Error getting child pages: ", err)
-	}
-
 	now := time.Now()
-
-	type Articles struct {
-		ID             string
-		Title          string
-		lastUpdateTime time.Time
-	}
-
-	var oldArticles []Articles
-
-	for _, v := range childPages.Results {
-		hist, err := api.GetHistory(v.ID)
-		if err != nil {
-			log.Fatal("Error getting history: ", err)
-		}
-		lastUpdateTimeString := hist.LastUpdated.When
-		lastUpdateTime, err := time.Parse("2006-01-02T15:04:05.000Z", lastUpdateTimeString)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		difference := now.Sub(lastUpdateTime)
-
-		// 3000h ~ 3 months
-		if difference.Hours() > 3000 {
-			oldArticles = append(oldArticles, Articles{ID: v.ID, Title: v.Title, lastUpdateTime: lastUpdateTime})
-		}
-
+	oldArticles, err := getOldArticles(api, cPageID, now, maxDepth, ageThresholdHours)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	if len(oldArticles) > 0 {
-		// get random article
-		rand.Seed(time.Now().UnixNano())
-		randIdx := rand.Intn(len(oldArticles))
-		fmt.Printf("Confluence page [%s](%s/pages/viewpage.action?pageId=%s) was last updated at %s. Please check its contents.\n", oldArticles[randIdx].Title, domain, oldArticles[randIdx].ID, oldArticles[randIdx].lastUpdateTime.Format("2006-01-02"))
+		r := rand.New((rand.NewSource(time.Now().UnixNano())))
+		randIdx := r.Intn(len(oldArticles))
+		selectedArticle := oldArticles[randIdx]
+		fmt.Printf("Confluence page [%s](%s/pages/viewpage.action?pageId=%s) was last updated at %s. Please check its contents.\n", selectedArticle.Title, domain, selectedArticle.ID, selectedArticle.LastUpdateTime.Format("2006-01-02"))
 	} else {
 		fmt.Println("There are no old Confluence Pages. Congratulations!")
 	}

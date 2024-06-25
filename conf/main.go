@@ -28,6 +28,8 @@ func ParseCliOpts() {
 	pflag.StringP("confluence_url", "u", "https://confluence.example.com/rest/api", "The URL to the Confluence REST-API with http(s)")
 	pflag.StringP("confluence_token", "t", "", "The token to authenticate against the Confluence REST-API")
 	pflag.StringP("confluence_page_id", "i", "", "The ID for which to crawl child pages")
+	pflag.IntP("max_depth", "d", 1, "depth combed to find unkempt pages")
+	pflag.Float64P("age_threshold_hours", "h", 3000, "maximum age confluence page should have to count as gardened")
 
 	pflag.Parse()
 	err := viper.BindPFlags(pflag.CommandLine)
