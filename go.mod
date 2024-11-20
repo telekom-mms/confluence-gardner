@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/spf13/pflag v1.0.5
-	github.com/virtomize/confluence-go-api v1.4.6
+	github.com/virtomize/confluence-go-api v1.5.0
 )
 
 require (
