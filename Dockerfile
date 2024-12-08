@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1@sha256:db1ff77fb637a5955317c7a3a62540196396d565f3dd5742e76dddbb6d75c4c5
-FROM golang:1.23-alpine@sha256:9a31ef0803e6afdf564edc8ba4b4e17caed22a0b1ecd2c55e3c8fdd8d8f68f98 AS build-env
+FROM golang:1.23-alpine@sha256:6c5c9590f169f77c8046e45c611d3b28fe477789acd8d3762d23d4744de69812 AS build-env
 RUN mkdir -p /go/src/confluence-gardner
 
 # Copy the module files first and then download the dependencies. If this
