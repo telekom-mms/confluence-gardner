@@ -6,7 +6,7 @@ toolchain go1.24.2
 
 require (
 	github.com/spf13/pflag v1.0.6
-	github.com/virtomize/confluence-go-api v1.5.0
+	github.com/virtomize/confluence-go-api v1.5.1
 )
 
 require (
