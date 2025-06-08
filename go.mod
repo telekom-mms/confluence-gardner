@@ -2,7 +2,7 @@ module confluence-gardner
 
 go 1.21.0
 
-toolchain go1.24.3
+toolchain go1.24.4
 
 require (
 	github.com/spf13/pflag v1.0.6
