@@ -1,4 +1,4 @@
-ARG  DISTROLESS_IMAGE=gcr.io/distroless/base@sha256:c83f022002fc917a92501a8c30c605efdad3010157ba2c8998a2cbf213299201
+ARG  DISTROLESS_IMAGE=gcr.io/distroless/base@sha256:f2df8702d4dcc45ce76df6cbc14ad1975fcf88a04bd0e8947b6194264f9ab75e
 
 # using base nonroot image
 # user:group is nobody:nobody, uid:gid = 65534:65534
